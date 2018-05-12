@@ -34,7 +34,8 @@ public class UserController {
     @Auth
     @ResponseBody
     public ResponseEntity<DefaultResponse> getUser(
-            @RequestHeader("Authorization") String jwt, @PathVariable("uidx") Long uidx) {
+            @RequestHeader("Authorization") String jwt,
+            @PathVariable("uidx") Long uidx) {
         User u = us.getUser(uidx);
         UserResponseData urd = UserResponseData.builder()
                 .idx(u.getIdx())
@@ -52,7 +53,8 @@ public class UserController {
     @Auth
     @ResponseBody
     public ResponseEntity<DefaultResponse> checkEmail(
-            @RequestHeader("Authorization") String jwt, @PathVariable("email") String email) {
+            @RequestHeader("Authorization") String jwt,
+            @PathVariable("email") String email) {
         CheckEmailResponseData cerd = CheckEmailResponseData.builder()
                 .exist(us.isEmailExist(email))
                 .build();
@@ -63,7 +65,8 @@ public class UserController {
     @Auth
     @ResponseBody
     public ResponseEntity<DefaultResponse> checkPhoneNumber(
-            @RequestHeader("Authorization") String jwt, @PathVariable("phoneNumber") String phoneNumber) {
+            @RequestHeader("Authorization") String jwt,
+            @PathVariable("phoneNumber") String phoneNumber) {
         CheckPhoneNumberResponseData cpnrd = CheckPhoneNumberResponseData.builder()
                 .exist(us.isPhoneNumberExist(phoneNumber))
                 .build();
@@ -99,7 +102,8 @@ public class UserController {
     @Auth
     @ResponseBody
     public ResponseEntity<DefaultResponse> updateUserPassword(
-            @Valid @RequestHeader("Authorization") String jwt, @PathVariable("uidx") Long uidx,
+            @Valid @RequestHeader("Authorization") String jwt,
+            @PathVariable("uidx") Long uidx,
             @RequestBody UpdateUserPasswordForm uupf) throws NoSuchAlgorithmException {
         User u = us.updateUser(uidx, uupf);
         UserResponseData urd = UserResponseData.builder()
@@ -114,6 +118,7 @@ public class UserController {
         return new ResponseEntity<>(new DefaultResponse(gurd), HttpStatus.OK);
     }
 
+    // TODO: 2018. 5. 12. Move below codes(ExceptionHandler) to another class file.
     @ExceptionHandler(NoSuchAlgorithmException.class)
     public ResponseEntity<?> handleStorageFileNotFound(NoSuchAlgorithmException nsae) {
         DefaultResponse dr = new DefaultResponse(Status.FAIL, Strings.CAN_NOT_FOUND_ALGORITHM);
